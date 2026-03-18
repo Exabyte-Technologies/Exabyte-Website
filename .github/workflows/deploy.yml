@@ -19,7 +19,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd /home/exabytewebsitehost/Exabyte-Website
-            git pull origin main
+            git pull https://gh-proxy.org/https://github.com/Exabyte-Technologies/Exabyte-Website.git main
             source venv/bin/activate
             pip install -r requirements.txt
             sudo systemctl restart exabytewebsite
