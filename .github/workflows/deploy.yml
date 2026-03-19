@@ -23,7 +23,7 @@ jobs:
             echo === RUN PRE-PUBLISH SCRIPT ===
             rm -rf /home/exabytewebsitehost/prepublishtmp
             mkdir /home/exabytewebsitehost/prepublishtmp
-            wget -P /home/exabytewebsitehost/prepublishtmp/prepublish.sh https://gh-proxy.org/https://raw.githubusercontent.com/Exabyte-Technologies/Exabyte-Website/refs/heads/main/prepublish.sh
+            wget -P /home/exabytewebsitehost/prepublishtmp/ https://gh-proxy.org/https://raw.githubusercontent.com/Exabyte-Technologies/Exabyte-Website/refs/heads/main/prepublish.sh
             sudo bash /home/exabytewebsitehost/prepublishtmp/prepublish.sh
             rm -rf /home/exabytewebsitehost/prepublishtmp
             echo === PRE-PUBLISH SCRIPT FINISHED ===
