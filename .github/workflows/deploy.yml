@@ -19,7 +19,14 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             echo $(date)
-            echo === GIT SITE PUBLISH START ===
+            echo *=== GIT SITE PUBLISH START ===*
+            echo === RUN PRE-PUBLISH SCRIPT ===
+            rm -rf /home/exabytewebsitehost/prepublishtmp
+            mkdir /home/exabytewebsitehost/prepublishtmp
+            wget -P /home/exabytewebsitehost/prepublishtmp/prepublish.sh https://gh-proxy.org/https://raw.githubusercontent.com/Exabyte-Technologies/Exabyte-Website/refs/heads/main/prepublish.sh
+            sudo bash /home/exabytewebsitehost/prepublishtmp/prepublish.sh
+            rm -rf /home/exabytewebsitehost/prepublishtmp
+            echo === PRE-PUBLISH SCRIPT FINISHED ===
             cd /home/exabytewebsitehost/Exabyte-Website
             echo === STARTING GIT PULL ===
             git pull https://gh-proxy.org/https://github.com/Exabyte-Technologies/Exabyte-Website.git main
@@ -30,8 +37,14 @@ jobs:
             echo === STARTING REQUIREMENTS INSTALLATION ===
             pip install -r requirements.txt
             echo === REQUIREMENTS INSTALLATION FINISHED ===
+            echo === RUN POST-PUBLISH SCRIPT ===
+            sudo bash /home/exabytewebsitehost/Exabyte-Website/postpublish.sh
+            echo === POST-PUBLISH SCRIPT FINISHED ===
             echo === STARTING SYSTEMCTL RESTART ===
             sudo systemctl restart exabytewebsite
             echo === SYSTEMCTL RESTART FINISHED ===
-            echo === GIT SITE PUBLISH FINISHED ===
+            echo === RUN EXIT PUBLISH SCRIPT ===
+            sudo bash /home/exabytewebsitehost/Exabyte-Website/exitpublish.sh
+            echo === EXIT PUBLISH SCRIPT FINISHED ===
+            echo *=== GIT SITE PUBLISH FINISHED ===*
             echo $(date)
