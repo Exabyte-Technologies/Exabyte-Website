@@ -1,4 +1,8 @@
+import os
 from flask import Flask, request, render_template, redirect, url_for
+from flask_session import Session
+from redis import Redis
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 from subsystems.captcha import start_cleanup_task, should_checkpoint
 from subsystems.captcha.routes import captcha_bp
@@ -6,8 +10,19 @@ from subsystems.captcha.routes import captcha_bp
 app = Flask(__name__, template_folder='templates', static_folder='static')
 app.register_blueprint(captcha_bp)
 
-# app secret key should be stable across restarts for sessions; since this is demo we keep the random behavior.
-app.secret_key = ''.join(__import__('random').choices(__import__('string').ascii_letters + __import__('string').digits, k=64))
+app.secret_key = os.getenv("FLASK_SECRET_KEY", "dev_secret_key")
+if not app.secret_key or app.secret_key == "dev_secret_key":
+    print("WARNING: using insecure secret; set FLASK_SECRET_KEY in prod")
+
+app.config.update({
+    "SESSION_TYPE": "redis",
+    "SESSION_REDIS": Redis(host=os.getenv("REDIS_HOST", "localhost"), port=int(os.getenv("REDIS_PORT", 6379))),
+    "SESSION_PERMANENT": False,
+    "SESSION_USE_SIGNER": True,
+})
+Session(app)
+
+app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1)
 
 start_cleanup_task()
 

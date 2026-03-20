@@ -1,13 +1,18 @@
+import os
 import random
 import string
-import threading
 import time
 from urllib.parse import urlparse, urljoin
 
 from capjs_server import CapServer
 from flask import request, session
+from redis import Redis
 
-characters = string.ascii_letters + string.digits
+redis_client = Redis(
+    host=os.getenv("REDIS_HOST", "localhost"),
+    port=int(os.getenv("REDIS_PORT", 6379)),
+    db=int(os.getenv("REDIS_DB", 0)),
+)
 
 SESSION_MAX_AGE_SEC = 43200
 RATE_LIMIT_THRESHOLD = 30
@@ -15,38 +20,20 @@ RATE_LIMIT_WINDOW = 60
 TOKEN_EXPIRY_SEC = 600
 
 cap = CapServer(
-    secret_key=''.join(random.choices(characters, k=64)),
+    secret_key=os.getenv("CAP_SECRET_KEY", "dev_cap_secret"),
     challenge_difficulty=5,
     challenge_count=32,
     challenge_size=32,
 )
 
-used_tokens = {}
-token_lock = threading.Lock()
-rate_limit_data = {}
-rate_lock = threading.Lock()
-
-
-def cleanup_task():
-    while True:
-        time.sleep(60)
-        now = time.time()
-
-        with token_lock:
-            expired = [t for t, ts in used_tokens.items() if now - ts > TOKEN_EXPIRY_SEC]
-            for t in expired:
-                del used_tokens[t]
-
-        with rate_lock:
-            for ip in list(rate_limit_data.keys()):
-                rate_limit_data[ip] = [t for t in rate_limit_data[ip] if now - t <= RATE_LIMIT_WINDOW]
-                if not rate_limit_data[ip]:
-                    del rate_limit_data[ip]
+if cap.secret_key == "dev_cap_secret":
+    print("WARNING: CAP_SECRET_KEY not set; use stable secret in production")
 
 
 def start_cleanup_task():
-    thread = threading.Thread(target=cleanup_task, daemon=True)
-    thread.start()
+    # In Redis-backed mode we do not need in-process cleanup.
+    # Keep a no-op callable for compatibility with app startup.
+    return
 
 
 def is_safe_url(target):
@@ -57,17 +44,19 @@ def is_safe_url(target):
 
 def add_rate_event(user_ip):
     now = time.time()
-    with rate_lock:
-        if user_ip not in rate_limit_data:
-            rate_limit_data[user_ip] = []
-        rate_limit_data[user_ip].append(now)
-        rate_limit_data[user_ip] = [t for t in rate_limit_data[user_ip] if now - t <= RATE_LIMIT_WINDOW]
-        return len(rate_limit_data[user_ip]) > RATE_LIMIT_THRESHOLD
+    key = f"rate-limit:{user_ip}"
+    member = f"{now}:{os.urandom(4).hex()}"
+
+    redis_client.zadd(key, {member: now})
+    redis_client.zremrangebyscore(key, 0, now - RATE_LIMIT_WINDOW)
+    count = redis_client.zcount(key, now - RATE_LIMIT_WINDOW, now)
+    redis_client.expire(key, RATE_LIMIT_WINDOW + 2)
+
+    return count > RATE_LIMIT_THRESHOLD
 
 
 def reset_rate_limit(user_ip):
-    with rate_lock:
-        rate_limit_data.pop(user_ip, None)
+    redis_client.delete(f"rate-limit:{user_ip}")
 
 
 def is_session_verified():
@@ -84,10 +73,11 @@ def should_checkpoint():
 
 
 def validate_and_use_token(cap_token):
-    with token_lock:
-        if cap_token in used_tokens:
-            return False, "CAPTCHA already used."
-        if not cap.validate(cap_token):
-            return False, "Validation failed!"
-        used_tokens[cap_token] = time.time()
+    key = f"captcha-token:{cap_token}"
+    if redis_client.exists(key):
+        return False, "CAPTCHA already used."
+    # check cap.validate first
+    if not cap.validate(cap_token):
+        return False, "Validation failed!"
+    redis_client.set(key, "used", ex=TOKEN_EXPIRY_SEC)
     return True, None

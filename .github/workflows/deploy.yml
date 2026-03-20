@@ -37,6 +37,13 @@ jobs:
             echo === STARTING VENV ACTIVATION ===
             source venv/bin/activate
             echo === VENV ACTIVATION FINISHED ===
+            echo === SETTING ENVIRONMENT VARIABLES ===
+            export FLASK_SECRET_KEY="${{ secrets.FLASK_SECRET_KEY }}"
+            export CAP_SECRET_KEY="${{ secrets.CAP_SECRET_KEY }}"
+            export REDIS_HOST="${{ secrets.REDIS_HOST }}"
+            export REDIS_PORT="${{ secrets.REDIS_PORT }}"
+            export REDIS_DB="${{ secrets.REDIS_DB }}"
+            echo === SET ENVIRONMENT VARIABLES FINISHED ===
             echo === STARTING REQUIREMENTS INSTALLATION ===
             pip install -r requirements.txt
             echo === REQUIREMENTS INSTALLATION FINISHED ===
