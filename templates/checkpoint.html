@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Just a moment...</title>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@cap.js/widget"></script>
+    <style>
+        body {
+            margin: 0; padding: 0; height: 100vh;
+            display: flex; align-items: center; justify-content: center;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #ffffff; color: #1d1d1d;
+        }
+        .cf-wrapper { max-width: 500px; width: 100%; padding: 20px; text-align: center; }
+        h1 { font-size: 24px; font-weight: 500; margin-bottom: 8px; }
+        p { color: #595959; font-size: 15px; margin-bottom: 30px; }
+        .cf-challenge { margin: 0 auto; display: flex; flex-direction: column; align-items: center; }
+        .alert { color: #d93025; margin-bottom: 15px; font-size: 14px; }
+    </style>
+</head>
+<body>
+    <div class="cf-wrapper">
+        <div style="display:flex; align-items:center; justify-content:center; gap:12px; margin-bottom:16px;">
+            <img src="/static/resources/exabyte.png" alt="Exabyte logo" style="height:40px; width:auto;" />
+            <span style="font-size:22px; font-weight:600; color:#1d1d1d;">Exabyte</span>
+        </div>
+        <hr style="border:none; height:1px; background:#e0e0e0; margin:0 auto 16px; width:20%;" />
+        <h1>Verify you are human</h1>
+        <p>Let's confirm you are not a robot before continuing.</p>
+        {% if error %}<div class="alert">{{ error }}</div>{% endif %}
+        <div class="cf-challenge">
+            <form method="POST">
+                <cap-widget id="cap" data-cap-api-endpoint="/api/cap/"></cap-widget>
+                <button id="submitCaptcha" type="submit" style="display: none;"></button>
+            </form>
+        </div>
+    </div>
+    <footer style="position:fixed; bottom:20px; left:0; width:100%; text-align:center; font-size:12px; color:#999;">&copy; 2026 Exabyte. All rights reserved. | <a class="beian" href="https://beian.miit.gov.cn/" target="_blank" style="color:#999; text-decoration:none;">京ICP备2026012142号-1</a></footer>
+    <script>
+        const capWidget = document.getElementById("cap");
+        const submitButton = document.getElementById("submitCaptcha");
+        capWidget.addEventListener("solve", (event) => {
+            submitButton.click();
+        });
+    </script>
+</body>
+</html>
