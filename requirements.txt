@@ -1,3 +1,6 @@
 Flask
 gunicorn
 capjs_server
+flask_session
+redis
+werkzeug
