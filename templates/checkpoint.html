@@ -34,14 +34,25 @@
                 <cap-widget id="cap" data-cap-api-endpoint="/api/cap/"></cap-widget>
                 <button id="submitCaptcha" type="submit" style="display: none;"></button>
             </form>
+            <div id="captchaHint" style="margin-top: 16px; min-height: 20px; color: #d93025; font-size: 14px; visibility: hidden; opacity: 0; transition: opacity 0.2s ease;">&nbsp;</div>
         </div>
     </div>
     <footer style="position:fixed; bottom:20px; left:0; width:100%; text-align:center; font-size:12px; color:#999;">&copy; 2026 Exabyte. All rights reserved. | <a class="beian" href="https://beian.miit.gov.cn/" target="_blank" style="color:#999; text-decoration:none;">京ICP备2026012142号-1</a></footer>
     <script>
         const capWidget = document.getElementById("cap");
         const submitButton = document.getElementById("submitCaptcha");
+        const captchaHint = document.getElementById("captchaHint");
+
         capWidget.addEventListener("solve", (event) => {
             submitButton.click();
+        });
+
+        window.addEventListener("load", () => {
+            setTimeout(() => {
+                captchaHint.textContent = "Stuck? Try reloading the page.";
+                captchaHint.style.visibility = "visible";
+                captchaHint.style.opacity = "1";
+            }, 20000);
         });
     </script>
 </body>
