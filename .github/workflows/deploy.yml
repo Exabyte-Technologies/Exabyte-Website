@@ -28,6 +28,9 @@ jobs:
             rm -rf /home/exabytewebsitehost/prepublishtmp
             echo === PRE-PUBLISH SCRIPT FINISHED ===
             cd /home/exabytewebsitehost/Exabyte-Website
+            echo === RESETTING LOCAL CHANGES ===
+            git reset --hard HEAD
+            echo === RESET LOCAL CHANGES FINISHED ===
             echo === STARTING GIT PULL ===
             git pull https://gh-proxy.org/https://github.com/Exabyte-Technologies/Exabyte-Website.git main
             echo === GIT PULL FINISHED ===
