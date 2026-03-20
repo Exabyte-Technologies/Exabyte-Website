@@ -19,14 +19,15 @@ RATE_LIMIT_THRESHOLD = 30
 RATE_LIMIT_WINDOW = 60
 TOKEN_EXPIRY_SEC = 600
 
+cap_secret = os.getenv("CAP_SECRET_KEY", "dev_cap_secret")
 cap = CapServer(
-    secret_key=os.getenv("CAP_SECRET_KEY", "dev_cap_secret"),
+    secret_key=cap_secret,
     challenge_difficulty=5,
     challenge_count=32,
     challenge_size=32,
 )
 
-if cap.secret_key == "dev_cap_secret":
+if cap_secret == "dev_cap_secret":
     print("WARNING: CAP_SECRET_KEY not set; use stable secret in production")
 
 
