@@ -163,7 +163,7 @@
                     captchaHint.textContent = "Click on the box to verify.";
                     captchaHint.style.opacity = "1";
                     captchaHint.style.color = "#595959;"
-                } else {
+                } else if (capWidget.innerHTML == 'Captcha loading, please wait ...') {
                     captchaHint.textContent = "Stuck? Try reloading the page.";
                     captchaHint.style.opacity = "1";
                     captchaHint.style.color = "#d93025;"
