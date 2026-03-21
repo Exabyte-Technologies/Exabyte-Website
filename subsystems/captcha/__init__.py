@@ -23,8 +23,8 @@ cap_secret = os.getenv("CAP_SECRET_KEY", "dev_cap_secret")
 cap = CapServer(
     secret_key=cap_secret,
     challenge_difficulty=5,
-    challenge_count=48,
-    challenge_size=48,
+    challenge_count=40,
+    challenge_size=40,
 )
 
 if cap_secret == "dev_cap_secret":
