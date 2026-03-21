@@ -44,7 +44,9 @@
         const captchaHint = document.getElementById("captchaHint");
 
         capWidget.addEventListener("solve", (event) => {
-            submitButton.click();
+            setTimeout(() => {
+                submitButton.click();
+            }, 1000);
         });
 
         window.addEventListener("load", () => {
