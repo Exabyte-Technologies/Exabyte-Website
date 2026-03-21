@@ -29,7 +29,7 @@ start_cleanup_task()
 
 @app.before_request
 def checkpoint_middleware():
-    allowed_endpoints = ['captcha.checkpoint', 'captcha.cap_challenge', 'captcha.cap_redeem', 'static']
+    allowed_endpoints = ['captcha.checkpoint', 'captcha.cap_challenge', 'captcha.cap_redeem', 'static', 'f92df826161393139e54e2a1bfd60cdf.txt']
     if request.endpoint in allowed_endpoints:
         return
 
@@ -70,6 +70,9 @@ def mslcTransfer(mslcURL):
     except Exception:
         return "There was an error with the redirect URL. We don't know where to redirect you. Please return to the page you came from manually."
 
+@app.route('f92df826161393139e54e2a1bfd60cdf.txt')
+def f92df826161393139e54e2a1bfd60cdf():
+    return "5614c1ce19b787b5d0d1acbf683ea1d38c3a6192"
 
 if __name__ == '__main__':
     app.run(debug=False, port=80, host='0.0.0.0')
