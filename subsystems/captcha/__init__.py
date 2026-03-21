@@ -23,8 +23,8 @@ cap_secret = os.getenv("CAP_SECRET_KEY", "dev_cap_secret")
 cap = CapServer(
     secret_key=cap_secret,
     challenge_difficulty=5,
-    challenge_count=32,
-    challenge_size=32,
+    challenge_count=48,
+    challenge_size=48,
 )
 
 if cap_secret == "dev_cap_secret":
@@ -75,7 +75,6 @@ def validate_and_use_token(cap_token):
     key = f"captcha-token:{cap_token}"
     if redis_client.exists(key):
         return False, "CAPTCHA already used."
-    # check cap.validate first
     if not cap.validate(cap_token):
         return False, "Validation failed!"
     redis_client.set(key, "used", ex=TOKEN_EXPIRY_SEC)
