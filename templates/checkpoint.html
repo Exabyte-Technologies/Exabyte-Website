@@ -16,8 +16,10 @@
         h1 { font-size: 24px; font-weight: 500; margin-bottom: 8px; }
         p { color: #595959; font-size: 15px; margin-bottom: 30px; }
         .cf-challenge { margin: 0 auto; display: flex; flex-direction: column; align-items: center; }
-        .alert { color: #d93025; margin-bottom: 15px; font-size: 14px; }
-        cap-widget { --cap-widget-width: fit-content; }
+        .alert { margin-bottom: 15px; font-size: 14px; }
+        .captcha {
+            width: fit-content;
+        }
     </style>
 </head>
 <body>
@@ -35,7 +37,7 @@
                 <cap-widget id="cap" data-cap-api-endpoint="/api/cap/">Captcha loading, please wait ...</cap-widget>
                 <button id="submitCaptcha" type="submit" style="display: none;"></button>
             </form>
-            <div id="captchaHint" style="margin-top: 16px; min-height: 20px; color: #d93025; font-size: 14px; visibility: hidden; opacity: 0; transition: opacity 0.2s ease;">&nbsp;</div>
+            <div id="captchaHint" style="margin-top: 16px; min-height: 20px; font-size: 14px; opacity: 0; transition: opacity 0.35s ease;">&nbsp;</div>
         </div>
     </div>
     <footer style="position:fixed; bottom:20px; left:0; width:100%; text-align:center; font-size:12px; color:#999;">&copy; 2026 Exabyte. All rights reserved. | <a class="beian" href="https://beian.miit.gov.cn/" target="_blank" style="color:#999; text-decoration:none;">京ICP备2026012142号-1</a></footer>
@@ -48,25 +50,21 @@
             "Prove your organic heart.",
             "Real humans click here.",
             "Are you a robot?",
-            "Strictly for carbon lifeforms.",
             "No bots allowed inside.",
             "Verify your pulse, please.",
             "Show us those neurons.",
             "Just a quick check-in.",
             "Human test: Start here.",
-            "Identity check: Being human.",
             "Seeking a real person.",
             "Prove you're not metal.",
             "Hearts and thumbs only.",
             "Validation for non-robots.",
             "Are you actually real?",
             "Click if you're breathing.",
-            "Robot or not? Deciding...",
+            "Are you a robot or not?",
             "Only humans may pass.",
             "Verify your fleshy status.",
             "Quick check for circuits.",
-            "Proving you're not software.",
-            "Human verification in progress.",
             "Not a machine? Prove it.",
             "We like humans best.",
             "Digital-free zone ahead.",
@@ -88,30 +86,33 @@
             "Organic lifeform detected.",
             "High-five, fellow mammal!",
             "100% genuine person.",
-            "No robots allowed!",
             "Nice job, skin-haver.",
             "Authentically you.",
             "Confirmed: Not metal.",
             "Squares: 0. Human: 1.",
-            "Clicking like a pro.",
             "Take that, algorithms!",
-            "Look at those thumbs.",
             "Victory for humanity!",
             "Robot-free zone secured.",
-            "Stop! Human time.",
-            "You’ve got the touch.",
+            "It's nice being a human.",
             "So very un-robotic.",
             "Brains over batteries.",
             "Hooray, real person!",
             "Welcome back, human.",
-            "You’re the real deal.",
             "Stay human, stay cool.",
             "Simply marvelous human.",
             "Yay! No wires.",
             "Sweet, sweet humanity.",
             "Humanity confirmed!",
             "Basically a genius.",
-            "Go forth, human!"
+            "Go forth, human!",
+            "Bots: 0. Humans: 1",
+            "Victory for humans!",
+            "You shall pass!",
+            "Entering human-only area.",
+            "Bot -1, Human +1",
+            "Results are in: Human.",
+            "Have a nice day!",
+            "Definitely human"
         ];
 
         const randomPhraseVerified = phrasesVerified[Math.floor(Math.random() * phrasesVerified.length)];
@@ -123,7 +124,6 @@
             "Sniffing for BIOS...",
             "Checking for pulse...",
             "Detecting human vibes...",
-            "Verifying organic matter...",
             "Hunting for metal...",
             "Analyzing carbon levels...",
             "Testing for soul...",
@@ -133,20 +133,12 @@
             "Peering into neurons...",
             "Feeling for warmth...",
             "Searching for DNA...",
-            "Checking thumb prints...",
-            "Watching for blinks...",
             "Scanning for batteries...",
             "Sifting for silicon...",
-            "Confirming non-binary status...",
             "Probing for imagination...",
-            "Gauging human awkwardness...",
-            "Calculating your humanity...",
             "Monitoring for glitches...",
-            "Tracking eye movement...",
             "Filtering out bots...",
-            "Sniffing for grease...",
             "Seeking real emotions...",
-            "Authenticating your biology...",
             "Measuring heart rate...",
             "Validating fleshy bits..."
         ];
@@ -154,6 +146,10 @@
         const randomVerifyingPhrase = phrasesVerifying[Math.floor(Math.random() * phrasesVerifying.length)];
         capWidget.setAttribute('data-cap-i18n-verifying-label', randomVerifyingPhrase);
         capWidget.setAttribute('data-cap-i18n-verifying-aria-label', randomVerifyingPhrase);
+
+        var solving = false;
+
+        capWidget.onprogress = () => { solving = true; };
 
         capWidget.addEventListener("solve", (event) => {
             setTimeout(() => {
@@ -163,10 +159,16 @@
 
         window.addEventListener("load", () => {
             setTimeout(() => {
-                captchaHint.textContent = "Stuck? Try reloading the page.";
-                captchaHint.style.visibility = "visible";
-                captchaHint.style.opacity = "1";
-            }, 20000);
+                if (!solving && capWidget.innerHTML != 'Captcha loading, please wait ...') {
+                    captchaHint.textContent = "Click on the box to verify.";
+                    captchaHint.style.opacity = "1";
+                    captchaHint.style.color = "#595959;"
+                } else {
+                    captchaHint.textContent = "Stuck? Try reloading the page.";
+                    captchaHint.style.opacity = "1";
+                    captchaHint.style.color = "#d93025;"
+                }
+            }, 10000);
         });
     </script>
 </body>
