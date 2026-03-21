@@ -43,6 +43,80 @@
         const submitButton = document.getElementById("submitCaptcha");
         const captchaHint = document.getElementById("captchaHint");
 
+        const initialPhrases = [
+            "Prove your organic heart.",
+            "Real humans click here.",
+            "Are you a robot?",
+            "Strictly for carbon lifeforms.",
+            "No bots allowed inside.",
+            "Verify your pulse, please.",
+            "Show us those neurons.",
+            "Just a quick check-in.",
+            "Human test: Start here.",
+            "Identity check: Being human.",
+            "Seeking a real person.",
+            "Prove you're not metal.",
+            "Hearts and thumbs only.",
+            "Validation for non-robots.",
+            "Are you actually real?",
+            "Click if you're breathing.",
+            "Robot or not? Deciding...",
+            "Only humans may pass.",
+            "Verify your fleshy status.",
+            "Quick check for circuits.",
+            "Proving you're not software.",
+            "Human verification in progress.",
+            "Not a machine? Prove it.",
+            "We like humans best.",
+            "Digital-free zone ahead.",
+            "Show us your humanity.",
+            "Confirm your human-ness.",
+            "Biological entities only!",
+            "Are you 100% human?",
+            "Verify your human vibe."
+        ];
+
+        const randomInitialPhrase = initialPhrases[Math.floor(Math.random() * initialPhrases.length)];
+        capWidget.setAttribute('data-cap-i18n-initial-state', randomInitialPhrase);
+        capWidget.setAttribute('data-cap-i18n-verify-aria-label', randomInitialPhrase);
+
+        const phrasesVerified = [
+            "Beep boop? Not today!",
+            "Pure human excellence.",
+            "Zero circuits found here.",
+            "Organic lifeform detected.",
+            "High-five, fellow mammal!",
+            "100% genuine person.",
+            "No robots allowed!",
+            "Nice job, skin-haver.",
+            "Authentically you.",
+            "Confirmed: Not metal.",
+            "Squares: 0. Human: 1.",
+            "Clicking like a pro.",
+            "Take that, algorithms!",
+            "Look at those thumbs.",
+            "Victory for humanity!",
+            "Robot-free zone secured.",
+            "Stop! Human time.",
+            "You’ve got the touch.",
+            "So very un-robotic.",
+            "Brains over batteries.",
+            "Hooray, real person!",
+            "Welcome back, human.",
+            "You’re the real deal.",
+            "Stay human, stay cool.",
+            "Simply marvelous human.",
+            "Yay! No wires.",
+            "Sweet, sweet humanity.",
+            "Humanity confirmed!",
+            "Basically a genius.",
+            "Go forth, human!"
+        ];
+
+        const randomPhraseVerified = phrasesVerified[Math.floor(Math.random() * phrasesVerified.length)];
+        capWidget.setAttribute('data-cap-i18n-solved-label', randomPhraseVerified);
+        capWidget.setAttribute('data-cap-i18n-verified-aria-label', randomPhraseVerified);
+
         capWidget.addEventListener("solve", (event) => {
             setTimeout(() => {
                 submitButton.click();
