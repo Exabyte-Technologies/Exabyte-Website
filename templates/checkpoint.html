@@ -117,6 +117,43 @@
         capWidget.setAttribute('data-cap-i18n-solved-label', randomPhraseVerified);
         capWidget.setAttribute('data-cap-i18n-verified-aria-label', randomPhraseVerified);
 
+        const phrasesVerifying = [
+            "Scanning for circuits...",
+            "Sniffing for BIOS...",
+            "Checking for pulse...",
+            "Detecting human vibes...",
+            "Verifying organic matter...",
+            "Hunting for metal...",
+            "Analyzing carbon levels...",
+            "Testing for soul...",
+            "Inspecting for wires...",
+            "Screening for software...",
+            "Looking for skin...",
+            "Peering into neurons...",
+            "Feeling for warmth...",
+            "Searching for DNA...",
+            "Checking thumb prints...",
+            "Watching for blinks...",
+            "Scanning for batteries...",
+            "Sifting for silicon...",
+            "Confirming non-binary status...",
+            "Probing for imagination...",
+            "Gauging human awkwardness...",
+            "Calculating your humanity...",
+            "Monitoring for glitches...",
+            "Tracking eye movement...",
+            "Filtering out bots...",
+            "Sniffing for grease...",
+            "Seeking real emotions...",
+            "Authenticating your biology...",
+            "Measuring heart rate...",
+            "Validating fleshy bits..."
+        ];
+
+        const randomVerifyingPhrase = phrasesVerifying[Math.floor(Math.random() * phrasesVerifying.length)];
+        capWidget.setAttribute('data-cap-i18n-verifying-label', randomVerifyingPhrase);
+        capWidget.setAttribute('data-cap-i18n-verifying-aria-label', randomVerifyingPhrase);
+
         capWidget.addEventListener("solve", (event) => {
             setTimeout(() => {
                 submitButton.click();
