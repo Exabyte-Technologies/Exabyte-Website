@@ -32,8 +32,6 @@ if cap_secret == "dev_cap_secret":
 
 
 def start_cleanup_task():
-    # In Redis-backed mode we do not need in-process cleanup.
-    # Keep a no-op callable for compatibility with app startup.
     return
 
 

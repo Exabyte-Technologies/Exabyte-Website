@@ -31,7 +31,7 @@
         {% if error %}<div class="alert">{{ error }}</div>{% endif %}
         <div class="cf-challenge">
             <form method="POST">
-                <cap-widget id="cap" data-cap-api-endpoint="/api/cap/"></cap-widget>
+                <cap-widget id="cap" data-cap-api-endpoint="/api/cap/">Captcha loading, please wait ...</cap-widget>
                 <button id="submitCaptcha" type="submit" style="display: none;"></button>
             </form>
             <div id="captchaHint" style="margin-top: 16px; min-height: 20px; color: #d93025; font-size: 14px; visibility: hidden; opacity: 0; transition: opacity 0.2s ease;">&nbsp;</div>
