@@ -70,7 +70,7 @@ def mslcTransfer(mslcURL):
     except Exception:
         return "There was an error with the redirect URL. We don't know where to redirect you. Please return to the page you came from manually."
 
-@app.route('f92df826161393139e54e2a1bfd60cdf.txt')
+@app.route('/f92df826161393139e54e2a1bfd60cdf.txt')
 def f92df826161393139e54e2a1bfd60cdf():
     return "5614c1ce19b787b5d0d1acbf683ea1d38c3a6192"
 
