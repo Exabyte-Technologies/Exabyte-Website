@@ -29,7 +29,7 @@ start_cleanup_task()
 
 @app.before_request
 def checkpoint_middleware():
-    allowed_endpoints = ['captcha.checkpoint', 'captcha.cap_challenge', 'captcha.cap_redeem', 'static', 'f92df826161393139e54e2a1bfd60cdf']
+    allowed_endpoints = ['captcha.checkpoint', 'captcha.cap_challenge', 'captcha.cap_redeem', 'static', 'f92df826161393139e54e2a1bfd60cdf', 'WW_verify_3pW7p25ojnKUeTme']
     if request.endpoint in allowed_endpoints:
         return
 
@@ -73,6 +73,10 @@ def mslcTransfer(mslcURL):
 @app.route('/f92df826161393139e54e2a1bfd60cdf.txt')
 def f92df826161393139e54e2a1bfd60cdf():
     return "5614c1ce19b787b5d0d1acbf683ea1d38c3a6192"
+
+@app.route('/WW_verify_3pW7p25ojnKUeTme.txt')
+def wwVerify():
+    return "3pW7p25ojnKUeTme"
 
 if __name__ == '__main__':
     app.run(debug=False, port=80, host='0.0.0.0')
