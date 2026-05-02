@@ -29,7 +29,7 @@ start_cleanup_task()
 
 @app.before_request
 def checkpoint_middleware():
-    allowed_endpoints = ['captcha.checkpoint', 'captcha.cap_challenge', 'captcha.cap_redeem', 'static', 'f92df826161393139e54e2a1bfd60cdf', 'WW_verify_3pW7p25ojnKUeTme']
+    allowed_endpoints = ['captcha.checkpoint', 'captcha.cap_challenge', 'captcha.cap_redeem', 'static', 'f92df826161393139e54e2a1bfd60cdf', 'WW_verify_3pW7p25ojnKUeTme.txt']
     if request.endpoint in allowed_endpoints:
         return
 
