@@ -74,6 +74,10 @@ def mslcTransfer(mslcURL):
 def f92df826161393139e54e2a1bfd60cdf():
     return "5614c1ce19b787b5d0d1acbf683ea1d38c3a6192"
 
+@app.route('/MP_verify_EK48noGch8tAPw2O.txt')
+def mpVerify():
+    return "EK48noGch8tAPw2O"
+
 @app.route('/WW_verify_3pW7p25ojnKUeTme.txt')
 def wwVerify():
     return "3pW7p25ojnKUeTme"
