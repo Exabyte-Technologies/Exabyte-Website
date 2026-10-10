@@ -29,7 +29,7 @@ start_cleanup_task()
 
 @app.before_request
 def checkpoint_middleware():
-    allowed_endpoints = ['captcha.checkpoint', 'captcha.cap_challenge', 'captcha.cap_redeem', 'static', 'f92df826161393139e54e2a1bfd60cdf', 'wwVerify', 'mpVerify', 'mslcTransfer']
+    allowed_endpoints = ['captcha.checkpoint', 'captcha.cap_challenge', 'captcha.cap_redeem', 'static', 'f92df826161393139e54e2a1bfd60cdf', 'wwVerify', 'mpVerify', 'mslcTransfer', 'wecomadd']
     if request.endpoint in allowed_endpoints:
         return
 
@@ -81,6 +81,10 @@ def mpVerify():
 @app.route('/WW_verify_3pW7p25ojnKUeTme.txt')
 def wwVerify():
     return "3pW7p25ojnKUeTme"
+
+@app.route('/wecomadd')
+def wecomadd():
+    return redirect("https://work.weixin.qq.com/ca/cawcde49f7661af150")
 
 if __name__ == '__main__':
     app.run(debug=False, port=80, host='0.0.0.0')
